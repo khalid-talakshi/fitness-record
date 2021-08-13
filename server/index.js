@@ -5,9 +5,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const server = new ApolloServer({
+console.log(process.env.MONGODB_URL);
+
+const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
-server.listen().then(({ url }) => console.log(`Server is running on ${url}`));
+apolloServer
+  .listen()
+  .then(({ url }) => console.log(`Server is running on ${url}`));
