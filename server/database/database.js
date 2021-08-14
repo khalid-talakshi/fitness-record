@@ -22,7 +22,6 @@ const insertUser = async (name, email, password) => {
     await client.connect();
     const usersCollection = client.db("development").collection("users");
     const exisitngUser = await usersCollection.findOne({ email });
-    console.log(exisitngUser);
     if (!exisitngUser) {
       await usersCollection.insertOne({ name, email, password });
       const documents = await usersCollection
@@ -30,7 +29,6 @@ const insertUser = async (name, email, password) => {
         .sort({ _id: -1 })
         .limit(1)
         .toArray();
-      console.log(documents);
       return documents;
     }
     throw new Error("EXISTING_USER");

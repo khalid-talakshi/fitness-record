@@ -23,6 +23,7 @@ type AuthPayloadWithError {
 type Query {
   info: String!
   testConnection(name: String!): String!
+  testAuthentication: String
 }
 
 type Mutation {

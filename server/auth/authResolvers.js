@@ -38,7 +38,7 @@ async function login(parent, args, context, info) {
     if (!valid) {
       throw new Error("INVALID_PASSWORD");
     }
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    const token = jwt.sign({ userId: user._id }, process.env.APP_SECRET);
     return {
       result: {
         token,
@@ -75,4 +75,9 @@ async function login(parent, args, context, info) {
   }
 }
 
-export { signup, login };
+async function testAuthentication(parent, args, context, info) {
+  const { userId } = context;
+  return userId;
+}
+
+export { signup, login, testAuthentication };
