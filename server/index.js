@@ -5,8 +5,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-console.log(process.env.MONGODB_URL);
-
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,

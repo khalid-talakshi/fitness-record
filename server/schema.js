@@ -1,6 +1,6 @@
 export const typeDefs = `
 type Query {
   info: String!
-  testConnection: String!
+  testConnection(name: String!): String!
 }
 `;
