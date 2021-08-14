@@ -1,5 +1,5 @@
 import { testConnection } from "./database/database";
-import { signup } from "./auth/authResolvers";
+import { login, signup } from "./auth/authResolvers";
 
 const testConnectionResolver = async (name) => {
   await testConnection(name);
@@ -13,5 +13,6 @@ export const resolvers = {
   },
   Mutation: {
     signup: signup,
+    login: login,
   },
 };
