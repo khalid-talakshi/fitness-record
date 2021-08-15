@@ -7,15 +7,10 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-import validator from "validator";
 
-const CREATE_USER = gql`
-  mutation Signup(
-    $signupName: String!
-    $signupEmail: String!
-    $signupPassword: String!
-  ) {
-    signup(name: $signupName, email: $signupEmail, password: $signupPassword) {
+const LOGIN_USER = gql`
+  mutation Login($loginEmail: String!, $loginPassword: String!) {
+    login(email: $loginEmail, password: $loginPassword) {
       result {
         token
         user {
@@ -68,17 +63,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const RegistrationForm = () => {
-  const [signup] = useMutation(CREATE_USER);
-  const [name, setName] = useState("");
+export const LoginForm = () => {
+  const [login] = useMutation(LOGIN_USER);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const classes = useStyles();
 
   const createUser = async () => {
-    const { data } = await signup({
+    const { data } = await login({
       variables: {
-        signupName: name,
         signupEmail: email,
         signupPassword: password,
       },
@@ -86,10 +79,9 @@ export const RegistrationForm = () => {
     console.log(data);
   };
 
-  const validEmail = validator.isEmail(email);
   return (
     <Card className={classes.mainContainer}>
-      <Typography variant="h4">Register</Typography>
+      <Typography variant="h4">Login</Typography>
       <form
         className={classes.form}
         onSubmit={(e) => {
@@ -97,13 +89,6 @@ export const RegistrationForm = () => {
           createUser();
         }}
       >
-        <TextField
-          label="Name"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          className={`${classes.margin}`}
-          variant="outlined"
-        />
         <TextField
           label="Email"
           value={email}
@@ -119,12 +104,7 @@ export const RegistrationForm = () => {
           variant="outlined"
           className={`${classes.margin}`}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          disabled={!validEmail}
-        >
+        <Button variant="contained" color="primary" type="submit">
           Submit
         </Button>
       </form>

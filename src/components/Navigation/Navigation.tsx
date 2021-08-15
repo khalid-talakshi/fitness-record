@@ -57,9 +57,11 @@ export const Navigation = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            News
+            PRSNL Fitness
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={() => history.push("/login")}>
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
       {menuMarkup}

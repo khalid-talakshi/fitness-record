@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, BrowserRouter as Router, Link } from "react-router-dom";
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import {
   ApolloClient,
   ApolloProvider,
@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import "./App.css";
 
-import { RegistrationForm, Navigation } from "./components";
+import { RegistrationForm, Navigation, LoginForm } from "./components";
 
 function App() {
   const client = new ApolloClient({
@@ -44,6 +44,9 @@ function App() {
               </Route>
               <Route exact path="/">
                 <p>Hello World!</p>
+              </Route>
+              <Route exact path="/login">
+                <LoginForm />
               </Route>
             </Switch>
           </Container>
