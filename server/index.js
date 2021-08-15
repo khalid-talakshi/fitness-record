@@ -12,6 +12,7 @@ const app = express();
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
+  cors: false,
   context: ({ req }) => {
     return {
       ...req,
@@ -22,9 +23,15 @@ const apolloServer = new ApolloServer({
 
 await apolloServer.start();
 
+var corsOptions = {
+  origin: "*",
+  credentials: true, // <-- REQUIRED backend setting
+};
+
 apolloServer.applyMiddleware({
   app,
   path: "/graphql",
+  cors: corsOptions,
 });
 
 app.listen(4000, () => {

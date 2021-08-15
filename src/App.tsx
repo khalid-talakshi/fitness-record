@@ -1,6 +1,11 @@
 import React from "react";
 import { Switch, Route, BrowserRouter as Router, Link } from "react-router-dom";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloProvider,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
 import {
   Container,
   createTheme,
@@ -13,7 +18,10 @@ import { RegistrationForm, Navigation } from "./components";
 
 function App() {
   const client = new ApolloClient({
-    uri: "https://6642b518cdba.ngrok.io/graphql",
+    link: new HttpLink({
+      uri: "http://31c5bea63c30.ngrok.io/graphql",
+      fetchOptions: "no-cors",
+    }),
     cache: new InMemoryCache(),
   });
 
