@@ -1,10 +1,15 @@
 import React from "react";
 import { Switch, Route, BrowserRouter as Router, Link } from "react-router-dom";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { createTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
+import {
+  Container,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+} from "@material-ui/core";
 import "./App.css";
 
-import { RegistrationForm } from "./components";
+import { RegistrationForm, Navigation } from "./components";
 
 function App() {
   const client = new ApolloClient({
@@ -23,22 +28,17 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Router>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/register">Register</Link>
-            </li>
-          </ul>
-          <Switch>
-            <Route exact path="/register">
-              <RegistrationForm />
-            </Route>
-            <Route exact path="/">
-              <p>Hello World!</p>
-            </Route>
-          </Switch>
+          <Navigation />
+          <Container>
+            <Switch>
+              <Route exact path="/register">
+                <RegistrationForm />
+              </Route>
+              <Route exact path="/">
+                <p>Hello World!</p>
+              </Route>
+            </Switch>
+          </Container>
         </Router>
       </ThemeProvider>
     </ApolloProvider>
