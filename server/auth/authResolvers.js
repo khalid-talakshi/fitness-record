@@ -1,4 +1,8 @@
-import { insertUser, finduser } from "../database/database";
+import {
+  insertUser,
+  findUserByEmail,
+  findUserById,
+} from "../database/database";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -33,7 +37,7 @@ async function signup(parent, args, context, info) {
 
 async function login(parent, args, context, info) {
   try {
-    const user = await finduser(args.email);
+    const user = await findUserByEmail(args.email);
     const valid = await bcrypt.compare(args.password, user.password);
     if (!valid) {
       throw new Error("INVALID_PASSWORD");
@@ -80,4 +84,15 @@ async function testAuthentication(parent, args, context, info) {
   return userId;
 }
 
-export { signup, login, testAuthentication };
+async function getUserDetails(parent, args, context, info) {
+  const { userId } = context;
+  try {
+    const user = await findUserById(userId);
+    return user;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export { signup, login, testAuthentication, getUserDetails };
