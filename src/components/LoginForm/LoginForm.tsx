@@ -72,8 +72,8 @@ export const LoginForm = () => {
   const createUser = async () => {
     const { data } = await login({
       variables: {
-        signupEmail: email,
-        signupPassword: password,
+        loginEmail: email,
+        loginPassword: password,
       },
     });
     console.log(data);
