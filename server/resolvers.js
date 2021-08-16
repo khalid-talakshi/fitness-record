@@ -1,5 +1,6 @@
 import { testConnection } from "./database";
 import { login, signup, testAuthentication, getUserDetails } from "./auth";
+import { createWorkoutPlan } from "./workoutResolvers";
 
 const testConnectionResolver = async (name) => {
   await testConnection(name);
@@ -16,5 +17,6 @@ export const resolvers = {
   Mutation: {
     signup: signup,
     login: login,
+    createWorkoutPlan: createWorkoutPlan,
   },
 };

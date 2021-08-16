@@ -20,6 +20,29 @@ type AuthPayloadWithError {
   error: Error
 }
 
+type Workout {
+  name: String!
+  reps: Int!
+  set: Int!
+}
+
+type WorkoutPlan {
+  id: ID!
+  name: String!
+  createdBy: String!
+  workouts: [Workout]!
+}
+
+type GenericError {
+  name: String!
+  message: String!
+}
+
+type WorkoutPlanWithError {
+  result: WorkoutPlan
+  error: GenericError
+}
+
 type Query {
   info: String!
   testConnection(name: String!): String!
@@ -30,5 +53,6 @@ type Query {
 type Mutation {
   signup(name: String!, email: String!, password: String!): AuthPayloadWithError
   login(email: String!, password: String!): AuthPayloadWithError
+  createWorkoutPlan(name: String!): WorkoutPlanWithError
 }
 `;
