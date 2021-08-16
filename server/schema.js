@@ -24,6 +24,7 @@ type Query {
   info: String!
   testConnection(name: String!): String!
   testAuthentication: String
+  getUserDetails: User
 }
 
 type Mutation {

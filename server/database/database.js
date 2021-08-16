@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -37,7 +37,7 @@ const insertUser = async (name, email, password) => {
   }
 };
 
-const finduser = async (email) => {
+const findUserByEmail = async (email) => {
   try {
     await client.connect();
     const usersCollection = client.db("development").collection("users");
@@ -51,4 +51,18 @@ const finduser = async (email) => {
   }
 };
 
-export { client, testConnection, insertUser, finduser };
+const findUserById = async (id) => {
+  try {
+    await client.connect();
+    const usersCollection = client.db("development").collection("users");
+    const user = await usersCollection.findOne(ObjectId(id));
+    if (user) {
+      return user;
+    }
+    throw new Error("NO_USER_FOUND");
+  } finally {
+    await client.close();
+  }
+};
+
+export { client, testConnection, insertUser, findUserByEmail, findUserById };

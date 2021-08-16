@@ -1,7 +1,15 @@
-import React, { useContext } from "react";
-import { UserContext } from "../../context";
+import { useQuery, gql } from "@apollo/client";
+import React from "react";
+
+const GET_USERDETAILS = gql`
+  query getUserDetails {
+    getUserDetails {
+      name
+    }
+  }
+`;
 
 export const Dashboard = () => {
-  const { userToken } = useContext(UserContext);
-  return <p>{userToken}</p>;
+  const { data } = useQuery(GET_USERDETAILS);
+  return <p>{data?.getUserDetails?.name || "Test"}</p>;
 };

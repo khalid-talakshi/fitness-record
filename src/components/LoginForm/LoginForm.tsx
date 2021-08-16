@@ -90,10 +90,6 @@ export const LoginForm = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(userToken);
-  }, [userToken]);
-
   const closeToast = () => {
     setErrorMessage("");
   };
