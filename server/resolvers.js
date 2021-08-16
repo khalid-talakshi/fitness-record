@@ -1,10 +1,5 @@
-import { testConnection } from "./database/database";
-import {
-  login,
-  signup,
-  testAuthentication,
-  getUserDetails,
-} from "./auth/authResolvers";
+import { testConnection } from "./database";
+import { login, signup, testAuthentication, getUserDetails } from "./auth";
 
 const testConnectionResolver = async (name) => {
   await testConnection(name);

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { gql, useMutation } from "@apollo/client";
 import {
   TextField,
@@ -72,7 +72,7 @@ export const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const classes = useStyles();
-  const { userToken, updateUserToken } = useContext(UserContext);
+  const { updateUserToken } = useContext(UserContext);
   const history = useHistory();
 
   const createUser = async () => {
