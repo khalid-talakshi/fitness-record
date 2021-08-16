@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { UserContext } from "../../context";
 import { useHistory } from "react-router-dom";
+import { ErrorToast } from "..";
 
 const LOGIN_USER = gql`
   mutation Login($loginEmail: String!, $loginPassword: String!) {
@@ -69,6 +70,7 @@ export const LoginForm = () => {
   const [login] = useMutation(LOGIN_USER);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const classes = useStyles();
   const { userToken, updateUserToken } = useContext(UserContext);
   const history = useHistory();
@@ -80,9 +82,11 @@ export const LoginForm = () => {
         loginPassword: password,
       },
     });
-    if (data?.login.result) {
+    if (data?.login?.result) {
       updateUserToken(data.login.result.token);
       history.push("/dashboard");
+    } else if (data?.login?.error) {
+      setErrorMessage(data.login.error.message);
     }
   };
 
@@ -90,35 +94,47 @@ export const LoginForm = () => {
     console.log(userToken);
   }, [userToken]);
 
+  const closeToast = () => {
+    setErrorMessage("");
+  };
+
   return (
-    <Card className={classes.mainContainer}>
-      <Typography variant="h4">Login</Typography>
-      <form
-        className={classes.form}
-        onSubmit={(e) => {
-          e.preventDefault();
-          createUser();
-        }}
-      >
-        <TextField
-          label="Email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          className={`${classes.margin}`}
-          variant="outlined"
-        />
-        <TextField
-          label="Password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          type="password"
-          variant="outlined"
-          className={`${classes.margin}`}
-        />
-        <Button variant="contained" color="primary" type="submit">
-          Submit
-        </Button>
-      </form>
-    </Card>
+    <>
+      <Card className={classes.mainContainer}>
+        <Typography variant="h4">Login</Typography>
+        <form
+          className={classes.form}
+          onSubmit={(e) => {
+            e.preventDefault();
+            createUser();
+          }}
+        >
+          <TextField
+            label="Email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            className={`${classes.margin}`}
+            variant="outlined"
+          />
+          <TextField
+            label="Password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            type="password"
+            variant="outlined"
+            className={`${classes.margin}`}
+          />
+          <Button variant="contained" color="primary" type="submit">
+            Submit
+          </Button>
+        </form>
+      </Card>
+      <ErrorToast
+        open={Boolean(errorMessage)}
+        handleClose={closeToast}
+        duration={6000}
+        message={errorMessage}
+      />
+    </>
   );
 };
