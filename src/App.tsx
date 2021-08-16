@@ -8,7 +8,12 @@ import {
 } from "@material-ui/core";
 import "./App.css";
 
-import { RegistrationForm, Navigation, LoginForm } from "./components";
+import {
+  RegistrationForm,
+  Navigation,
+  LoginForm,
+  Dashboard,
+} from "./components";
 import { UserContextProvider, ApiProvider } from "./context";
 
 function App() {
@@ -35,6 +40,9 @@ function App() {
                 </Route>
                 <Route exact path="/login">
                   <LoginForm />
+                </Route>
+                <Route exact path="/dashboard">
+                  <Dashboard />
                 </Route>
               </Switch>
             </Container>

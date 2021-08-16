@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { gql, useMutation } from "@apollo/client";
 import {
   TextField,
@@ -7,6 +7,8 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
+import { UserContext } from "../../context";
+import { useHistory } from "react-router-dom";
 
 const LOGIN_USER = gql`
   mutation Login($loginEmail: String!, $loginPassword: String!) {
@@ -68,6 +70,8 @@ export const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const classes = useStyles();
+  const { userToken, updateUserToken } = useContext(UserContext);
+  const history = useHistory();
 
   const createUser = async () => {
     const { data } = await login({
@@ -76,8 +80,15 @@ export const LoginForm = () => {
         loginPassword: password,
       },
     });
-    console.log(data);
+    if (data?.login.result) {
+      updateUserToken(data.login.result.token);
+      history.push("/dashboard");
+    }
   };
+
+  useEffect(() => {
+    console.log(userToken);
+  }, [userToken]);
 
   return (
     <Card className={classes.mainContainer}>
