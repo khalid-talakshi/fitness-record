@@ -1,7 +1,8 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
 import { makeStyles, Typography, Grid, Card, CardContent } from "@material-ui/core";
-import { FullscreenExitTwoTone } from "@material-ui/icons";
+
+import {WorkoutsCard} from './components';
 
 const GET_USERDETAILS = gql`
   query getUserDetails {
@@ -39,11 +40,7 @@ export const Dashboard = () => {
           </Card>
         </Grid>
         <Grid item xs={6}>
-          <Card>
-            <CardContent>
-            <Typography variant="h5">Workouts</Typography>
-            </CardContent>
-          </Card>
+          <WorkoutsCard />
         </Grid>
       </Grid>
     </>
