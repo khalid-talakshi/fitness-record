@@ -3,3 +3,4 @@ export { RegistrationForm } from "./RegistrationForm";
 export { Navigation } from "./Navigation";
 export { Dashboard } from "./Dashboard";
 export { ErrorToast } from "./ErrorToast";
+export {WorkoutPlanPage} from "./WorkoutPlanPage";
