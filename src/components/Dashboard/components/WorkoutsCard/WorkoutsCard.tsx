@@ -13,7 +13,7 @@ import { CreateWorkoutModal } from "../CreateWorkoutModal";
 import { ObjectId } from "mongodb";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LaunchIcon from "@material-ui/icons/Launch";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const GET_WORKOUT_PLANS = gql`
   query getWorkoutPlans {
@@ -39,6 +39,21 @@ const CREATE_WORKOUT_PLAN = gql`
   }
 `;
 
+const UPDATE_ACTIVE_WORKOUT = gql`
+  mutation setActiveWorkout($workoutId: String!) {
+    setActiveWorkout(workoutId: $workoutId) {
+      result {
+        id
+        activeWorkoutPlan
+      }
+      error {
+        name
+        message
+      }
+    }
+  }
+`;
+
 const useStyles = makeStyles((theme) => ({
   workoutItem: {
     display: "flex",
@@ -56,6 +71,7 @@ const WorkoutsCard = () => {
   const { data, error, refetch } = useQuery(GET_WORKOUT_PLANS);
   const [openModal, setOpenModal] = useState(false);
   const [createPlan] = useMutation(CREATE_WORKOUT_PLAN);
+  const [setActiveWorkout] = useMutation(UPDATE_ACTIVE_WORKOUT);
   const styles = useStyles();
   const history = useHistory();
 
@@ -75,10 +91,18 @@ const WorkoutsCard = () => {
       await refetch();
     }
   };
-  
-  useEffect(()=> {
-      refetch()
-  }, [])
+
+  const handleSetActiveWorkout = (id: string) => {
+    setActiveWorkout({
+      variables: {
+        workoutId: id,
+      },
+    });
+  };
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const cardMarkup = () => {
     if (data?.getWorkoutPlans?.length) {
@@ -89,8 +113,16 @@ const WorkoutsCard = () => {
               <div className={styles.workoutItem}>
                 <p>{item.name}</p>
                 <ButtonGroup color="primary" variant="contained">
-                  <Button>Active</Button>
-                  <Button onClick={() => history.push(`/workout-plan/${item.id}`)}>
+                  <Button
+                    onClick={() =>
+                      handleSetActiveWorkout(item.id.toString())
+                    }
+                  >
+                    Active
+                  </Button>
+                  <Button
+                    onClick={() => history.push(`/workout-plan/${item.id}`)}
+                  >
                     <LaunchIcon />
                   </Button>
                   <Button>
@@ -102,11 +134,7 @@ const WorkoutsCard = () => {
           </Card>
         )
       );
-      return (
-        <div className={styles.cardList}>
-          {array}
-        </div>
-      );
+      return <div className={styles.cardList}>{array}</div>;
     } else {
       return (
         <>
