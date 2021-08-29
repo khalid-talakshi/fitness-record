@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { useQuery, gql } from "@apollo/client";
 import { makeStyles, Typography, Grid, Card, CardContent } from "@material-ui/core";
 
@@ -22,15 +22,6 @@ const useStyles = makeStyles((theme) => ({
 export const Dashboard = () => {
   const { data } = useQuery(GET_USERDETAILS);
   const styles = useStyles();
-  const [openModal, setOpenModal] = useState(false);
-  
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  }
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  }
 
   return (
     <>

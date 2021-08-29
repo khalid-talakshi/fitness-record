@@ -9,6 +9,7 @@ async function insertWorkoutPlan(name, createdBy) {
       name,
       createdBy,
       workouts: [],
+      active: false,
     });
     if (res.insertedId) {
       const document = await workoutsCollection.findOne(

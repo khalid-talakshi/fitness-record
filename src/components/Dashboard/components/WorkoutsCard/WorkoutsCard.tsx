@@ -13,30 +13,12 @@ import { CreateWorkoutModal } from "../CreateWorkoutModal";
 import { ObjectId } from "mongodb";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LaunchIcon from "@material-ui/icons/Launch";
-
-const GET_WORKOUT_PLANS = gql`
-  query getWorkoutPlans {
-    getWorkoutPlans {
-      id
-      name
-    }
-  }
-`;
-
-const CREATE_WORKOUT_PLAN = gql`
-  mutation workoutPlanCreate($name: String!) {
-    createWorkoutPlan(name: $name) {
-      result {
-        id
-        name
-      }
-      error {
-        message
-        name
-      }
-    }
-  }
-`;
+import { useHistory } from "react-router-dom";
+import {
+  UPDATE_ACTIVE_WORKOUT,
+  CREATE_WORKOUT_PLAN,
+  GET_WORKOUT_PLANS,
+} from "./graphql";
 
 const useStyles = makeStyles((theme) => ({
   workoutItem: {
@@ -55,7 +37,9 @@ const WorkoutsCard = () => {
   const { data, error, refetch } = useQuery(GET_WORKOUT_PLANS);
   const [openModal, setOpenModal] = useState(false);
   const [createPlan] = useMutation(CREATE_WORKOUT_PLAN);
+  const [setActiveWorkout] = useMutation(UPDATE_ACTIVE_WORKOUT);
   const styles = useStyles();
+  const history = useHistory();
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -73,10 +57,18 @@ const WorkoutsCard = () => {
       await refetch();
     }
   };
-  
-  useEffect(()=> {
-      refetch()
-  }, [])
+
+  const handleSetActiveWorkout = (id: string) => {
+    setActiveWorkout({
+      variables: {
+        workoutId: id,
+      },
+    });
+  };
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const cardMarkup = () => {
     if (data?.getWorkoutPlans?.length) {
@@ -87,8 +79,14 @@ const WorkoutsCard = () => {
               <div className={styles.workoutItem}>
                 <p>{item.name}</p>
                 <ButtonGroup color="primary" variant="contained">
-                  <Button>Active</Button>
-                  <Button>
+                  <Button
+                    onClick={() => handleSetActiveWorkout(item.id.toString())}
+                  >
+                    Active
+                  </Button>
+                  <Button
+                    onClick={() => history.push(`/workout-plan/${item.id}`)}
+                  >
                     <LaunchIcon />
                   </Button>
                   <Button>
@@ -100,14 +98,7 @@ const WorkoutsCard = () => {
           </Card>
         )
       );
-      return (
-        <div className={styles.cardList}>
-          {array}
-          {/* <Button variant="contained" color="primary" onClick={handleOpenModal}>
-            Create a Workout Plan
-          </Button> */}
-        </div>
-      );
+      return <div className={styles.cardList}>{array}</div>;
     } else {
       return (
         <>

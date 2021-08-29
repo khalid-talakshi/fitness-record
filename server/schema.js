@@ -3,6 +3,7 @@ type User {
   id: ID!
   name: String
   email: String
+  activeWorkoutPlan: ID
 }
 
 type AuthPayload {
@@ -31,6 +32,7 @@ type WorkoutPlan {
   name: String!
   createdBy: ID!
   workouts: [Workout]!
+  active: Boolean!
 }
 
 type GenericError {
@@ -40,6 +42,11 @@ type GenericError {
 
 type WorkoutPlanWithError {
   result: WorkoutPlan
+  error: GenericError
+}
+
+type UserWithError {
+  result: User
   error: GenericError
 }
 
@@ -55,5 +62,6 @@ type Mutation {
   signup(name: String!, email: String!, password: String!): AuthPayloadWithError
   login(email: String!, password: String!): AuthPayloadWithError
   createWorkoutPlan(name: String!): WorkoutPlanWithError
+  setActiveWorkout(workoutId: String!): UserWithError
 }
 `;

@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import {
   Dialog,
-  Card,
   Typography,
-  CardContent,
   TextField,
   makeStyles,
   Button,
   DialogContent,
-  FormControl,
 } from "@material-ui/core";
-import gql from "graphql-tag";
-import { useMutation } from "@apollo/client";
 
 export interface Props {
   open?: boolean;
@@ -33,24 +28,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CREATE_WORKOUT_PLAN = gql`
-  mutation workoutPlanCreate($name: String!) {
-    createWorkoutPlan(name: $name) {
-      result {
-        id
-      }
-      error {
-        message
-        name
-      }
-    }
-  }
-`;
-
 const CreateWorkoutModal = ({ open, handleClose, createWorkout }: Props) => {
   const styles = useStyles();
   const [workoutPlanName, setWorkoutPlanName] = useState("");
-  const [createPlan] = useMutation(CREATE_WORKOUT_PLAN);
 
   return (
     <Dialog open={Boolean(open)} onClose={handleClose}>

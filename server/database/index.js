@@ -4,4 +4,5 @@ export { findUserById } from "./findUserById";
 export { insertUser } from "./insertUser";
 export { testConnection } from "./testConnection";
 export { insertWorkoutPlan } from "./insertWorkoutPlan";
-export {findWorkoutPlanByUser} from "./findWorkoutPlanByUser";
+export { findWorkoutPlanByUser } from "./findWorkoutPlanByUser";
+export { setActiveWorkoutOnUser } from "./setActiveWorkoutOnUser";

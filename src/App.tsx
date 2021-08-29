@@ -13,6 +13,7 @@ import {
   Navigation,
   LoginForm,
   Dashboard,
+  WorkoutPlanPage,
 } from "./components";
 import { UserContextProvider, ApiProvider } from "./context";
 
@@ -43,6 +44,9 @@ function App() {
                 </Route>
                 <Route exact path="/dashboard">
                   <Dashboard />
+                </Route>
+                <Route exact path="/workout-plan/:plan">
+                  <WorkoutPlanPage />
                 </Route>
               </Switch>
             </Container>

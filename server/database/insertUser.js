@@ -6,7 +6,7 @@ const insertUser = async (name, email, password) => {
     const usersCollection = client.db("development").collection("users");
     const exisitngUser = await usersCollection.findOne({ email });
     if (!exisitngUser) {
-      await usersCollection.insertOne({ name, email, password });
+      await usersCollection.insertOne({ name, email, password,  activeWorkoutPlan: null});
       const documents = await usersCollection
         .find()
         .sort({ _id: -1 })
