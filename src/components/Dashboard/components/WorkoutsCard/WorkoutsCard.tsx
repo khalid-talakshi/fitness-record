@@ -14,45 +14,11 @@ import { ObjectId } from "mongodb";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LaunchIcon from "@material-ui/icons/Launch";
 import { useHistory } from "react-router-dom";
-
-const GET_WORKOUT_PLANS = gql`
-  query getWorkoutPlans {
-    getWorkoutPlans {
-      id
-      name
-    }
-  }
-`;
-
-const CREATE_WORKOUT_PLAN = gql`
-  mutation workoutPlanCreate($name: String!) {
-    createWorkoutPlan(name: $name) {
-      result {
-        id
-        name
-      }
-      error {
-        message
-        name
-      }
-    }
-  }
-`;
-
-const UPDATE_ACTIVE_WORKOUT = gql`
-  mutation setActiveWorkout($workoutId: String!) {
-    setActiveWorkout(workoutId: $workoutId) {
-      result {
-        id
-        activeWorkoutPlan
-      }
-      error {
-        name
-        message
-      }
-    }
-  }
-`;
+import {
+  UPDATE_ACTIVE_WORKOUT,
+  CREATE_WORKOUT_PLAN,
+  GET_WORKOUT_PLANS,
+} from "./graphql";
 
 const useStyles = makeStyles((theme) => ({
   workoutItem: {
@@ -114,9 +80,7 @@ const WorkoutsCard = () => {
                 <p>{item.name}</p>
                 <ButtonGroup color="primary" variant="contained">
                   <Button
-                    onClick={() =>
-                      handleSetActiveWorkout(item.id.toString())
-                    }
+                    onClick={() => handleSetActiveWorkout(item.id.toString())}
                   >
                     Active
                   </Button>
