@@ -1,8 +1,18 @@
-import React, { useState } from "react";
-import { Typography, Card, CardContent, Button } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import {
+  Typography,
+  Card,
+  CardContent,
+  Button,
+  makeStyles,
+  ButtonGroup,
+} from "@material-ui/core";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/client";
 import { CreateWorkoutModal } from "../CreateWorkoutModal";
+import { ObjectId } from "mongodb";
+import DeleteIcon from "@material-ui/icons/Delete";
+import LaunchIcon from "@material-ui/icons/Launch";
 
 const GET_WORKOUT_PLANS = gql`
   query getWorkoutPlans {
@@ -18,6 +28,7 @@ const CREATE_WORKOUT_PLAN = gql`
     createWorkoutPlan(name: $name) {
       result {
         id
+        name
       }
       error {
         message
@@ -27,10 +38,24 @@ const CREATE_WORKOUT_PLAN = gql`
   }
 `;
 
+const useStyles = makeStyles((theme) => ({
+  workoutItem: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  createWorkoutButton: {
+    marginTop: theme.spacing(2),
+  },
+  cardList: {
+    marginTop: theme.spacing(2),
+  },
+}));
+
 const WorkoutsCard = () => {
   const { data, error, refetch } = useQuery(GET_WORKOUT_PLANS);
   const [openModal, setOpenModal] = useState(false);
   const [createPlan] = useMutation(CREATE_WORKOUT_PLAN);
+  const styles = useStyles();
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -48,17 +73,45 @@ const WorkoutsCard = () => {
       await refetch();
     }
   };
+  
+  useEffect(()=> {
+      refetch()
+  }, [])
 
   const cardMarkup = () => {
     if (data?.getWorkoutPlans?.length) {
-      return <p>There are workouts</p>;
+      const array = data.getWorkoutPlans.map(
+        (item: { id: ObjectId; name: string }) => (
+          <Card variant="outlined">
+            <CardContent>
+              <div className={styles.workoutItem}>
+                <p>{item.name}</p>
+                <ButtonGroup color="primary" variant="contained">
+                  <Button>Active</Button>
+                  <Button>
+                    <LaunchIcon />
+                  </Button>
+                  <Button>
+                    <DeleteIcon />
+                  </Button>
+                </ButtonGroup>
+              </div>
+            </CardContent>
+          </Card>
+        )
+      );
+      return (
+        <div className={styles.cardList}>
+          {array}
+          {/* <Button variant="contained" color="primary" onClick={handleOpenModal}>
+            Create a Workout Plan
+          </Button> */}
+        </div>
+      );
     } else {
       return (
         <>
           <p>No Workout Plans Found</p>
-          <Button variant="contained" color="primary" onClick={handleOpenModal}>
-            Create a Workout Plan
-          </Button>
         </>
       );
     }
@@ -72,6 +125,14 @@ const WorkoutsCard = () => {
         <CardContent>
           <Typography variant="h5">Workout Plans</Typography>
           {cardMarkup()}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleOpenModal}
+            className={styles.createWorkoutButton}
+          >
+            Create a Workout Plan
+          </Button>
         </CardContent>
       </Card>
       <CreateWorkoutModal

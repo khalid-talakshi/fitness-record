@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { useQuery, gql } from "@apollo/client";
 import { makeStyles, Typography, Grid, Card, CardContent } from "@material-ui/core";
 
-import {CreateWorkoutModal, WorkoutsCard} from './components';
+import {WorkoutsCard} from './components';
 
 const GET_USERDETAILS = gql`
   query getUserDetails {
