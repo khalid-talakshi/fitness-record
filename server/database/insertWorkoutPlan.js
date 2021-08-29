@@ -4,7 +4,7 @@ import { client } from "./client";
 async function insertWorkoutPlan(name, createdBy) {
   try {
     await client.connect();
-    const workoutsCollection = client.db("development").collection("workouts");
+    const workoutsCollection = client.db("development").collection("workoutPlans");
     const res = await workoutsCollection.insertOne({
       name,
       createdBy,

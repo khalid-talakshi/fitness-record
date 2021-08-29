@@ -29,7 +29,7 @@ type Workout {
 type WorkoutPlan {
   id: ID!
   name: String!
-  createdBy: String!
+  createdBy: ID!
   workouts: [Workout]!
 }
 
@@ -48,6 +48,7 @@ type Query {
   testConnection(name: String!): String!
   testAuthentication: String
   getUserDetails: User
+  getWorkoutPlans: [WorkoutPlan]
 }
 
 type Mutation {
