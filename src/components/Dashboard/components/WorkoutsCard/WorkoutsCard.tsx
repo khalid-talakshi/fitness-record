@@ -13,6 +13,7 @@ import { CreateWorkoutModal } from "../CreateWorkoutModal";
 import { ObjectId } from "mongodb";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LaunchIcon from "@material-ui/icons/Launch";
+import {useHistory} from "react-router-dom";
 
 const GET_WORKOUT_PLANS = gql`
   query getWorkoutPlans {
@@ -56,6 +57,7 @@ const WorkoutsCard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [createPlan] = useMutation(CREATE_WORKOUT_PLAN);
   const styles = useStyles();
+  const history = useHistory();
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -88,7 +90,7 @@ const WorkoutsCard = () => {
                 <p>{item.name}</p>
                 <ButtonGroup color="primary" variant="contained">
                   <Button>Active</Button>
-                  <Button>
+                  <Button onClick={() => history.push(`/workout-plan/${item.id}`)}>
                     <LaunchIcon />
                   </Button>
                   <Button>
@@ -103,9 +105,6 @@ const WorkoutsCard = () => {
       return (
         <div className={styles.cardList}>
           {array}
-          {/* <Button variant="contained" color="primary" onClick={handleOpenModal}>
-            Create a Workout Plan
-          </Button> */}
         </div>
       );
     } else {

@@ -44,6 +44,9 @@ function App() {
                 <Route exact path="/dashboard">
                   <Dashboard />
                 </Route>
+                <Route exact path="/workout-plan/:id">
+                  <p>Workout Plans</p>
+                </Route>
               </Switch>
             </Container>
           </Router>
