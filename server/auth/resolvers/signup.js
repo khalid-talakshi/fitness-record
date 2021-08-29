@@ -1,4 +1,4 @@
-import { insertUser } from "../database/database";
+import { insertUser } from "../../database";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

@@ -1,4 +1,4 @@
-import { findUserByEmail } from "../database/database";
+import { findUserByEmail } from "../../database";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
