@@ -6,11 +6,15 @@ import {
   ListItem,
   makeStyles,
   Divider,
+  Button,
 } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 export interface Props {
+  id: string;
   title: string;
   exercises: { name: string }[];
+  handleDelete(id: string): void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -20,9 +24,15 @@ const useStyles = makeStyles((theme) => ({
   exerciseTitle: {
     marginBottom: "1vh",
   },
+  titleContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: "1vh",
+    alignItems: "center",
+  },
 }));
 
-const WorkoutCard = ({ title, exercises }: Props) => {
+const WorkoutCard = ({ title, exercises, id, handleDelete }: Props) => {
   const styles = useStyles();
   const exerciseMarkup =
     exercises.length > 0 ? (
@@ -42,13 +52,16 @@ const WorkoutCard = ({ title, exercises }: Props) => {
     );
   return (
     <div>
-      <Typography variant="h6" className={styles.exerciseTitle}>
-        {title}
-      </Typography>
+      <div className={styles.titleContainer}>
+        <Typography variant="h6" className={styles.exerciseTitle}>
+          {title}
+        </Typography>
+        <Button variant="contained" color="secondary" type="submit" onClick={() => handleDelete(id)}>
+          <DeleteIcon />
+        </Button>
+      </div>
       <Card variant="outlined">
-        <List className={styles.exerciseList}>
-          {exerciseMarkup}
-        </List>
+        <List className={styles.exerciseList}>{exerciseMarkup}</List>
       </Card>
     </div>
   );

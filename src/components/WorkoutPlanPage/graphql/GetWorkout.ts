@@ -6,6 +6,7 @@ export const GET_WORKOUT_PLAN = gql`
       id
       name
       workouts {
+        id
         name
         exercises {
           name

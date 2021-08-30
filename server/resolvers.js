@@ -7,6 +7,7 @@ import {
   setActiveWorkout,
   getWorkoutPlan,
   addWorkout,
+  deleteWorkout,
 } from "./workoutResolvers";
 
 const testConnectionResolver = async (name) => {
@@ -30,5 +31,6 @@ export const resolvers = {
     setActiveWorkout: setActiveWorkout,
     deleteWorkoutPlan: deleteWorkoutPlan,
     addWorkout: addWorkout,
+    deleteWorkout: deleteWorkout,
   },
 };

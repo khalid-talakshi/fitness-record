@@ -9,3 +9,4 @@ export { setActiveWorkoutOnUser } from "./setActiveWorkoutOnUser";
 export { deleteWorkoutPlanById } from "./deleteWorkoutPlanById";
 export { findWorkoutPlanById } from "./findWorkoutPlanById";
 export { insertWorkoutOnWorkoutPlan } from "./insertWorkoutOnWorkoutPlan";
+export { deleteWorkoutOnWorkoutPlan } from "./deleteWorkoutOnWorkoutPlan";
