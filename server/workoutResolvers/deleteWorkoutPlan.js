@@ -3,7 +3,6 @@ import { deleteWorkoutPlanById, findWorkoutPlanByUser } from "../database";
 async function deleteWorkoutPlan(parent, args, context, info) {
   const { userId } = context;
   try {
-      console.log(args);
     await deleteWorkoutPlanById(args.workoutId);
     const plans = await findWorkoutPlanByUser(userId);
     return {
@@ -12,7 +11,6 @@ async function deleteWorkoutPlan(parent, args, context, info) {
     }
   } catch (err) {
     let errObj;
-    console.log(err.message)
     switch (err.message) {
       case "NO_WORKOUT_PLAN_FOUND":
         errObj = {

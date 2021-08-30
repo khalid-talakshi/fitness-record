@@ -83,7 +83,6 @@ export const RegistrationForm = () => {
         signupPassword: password,
       },
     });
-    console.log(data);
   };
 
   const validEmail = validator.isEmail(email);

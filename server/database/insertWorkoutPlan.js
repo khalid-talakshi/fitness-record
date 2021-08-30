@@ -4,7 +4,9 @@ import { client } from "./client";
 async function insertWorkoutPlan(name, createdBy) {
   try {
     await client.connect();
-    const workoutsCollection = client.db("development").collection("workoutPlans");
+    const workoutsCollection = client
+      .db("development")
+      .collection("workoutPlans");
     const res = await workoutsCollection.insertOne({
       name,
       createdBy,
@@ -12,9 +14,9 @@ async function insertWorkoutPlan(name, createdBy) {
       active: false,
     });
     if (res.insertedId) {
-      const document = await workoutsCollection.findOne(
-        ObjectId(res.insertedId)
-      );
+      const document = await workoutsCollection.findOne({
+        id: ObjectId(res.insertedId),
+      });
       return document;
     }
     throw new Error("WORKOUT_INSERT_FAILED");
