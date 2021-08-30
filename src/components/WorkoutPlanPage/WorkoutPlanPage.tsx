@@ -15,6 +15,7 @@ import {
 import SwipeableViews from "react-swipeable-views";
 import { WorkoutCard } from "./components";
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "2vh",
@@ -37,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
 
 const WorkoutPlanPage = () => {
   let { plan } = useParams<{ plan: string }>();
-  const [getPlan, { data, error, loading, refetch }] = useLazyQuery(GET_WORKOUT_PLAN);
+  const [getPlan, { data, error, loading, refetch }] =
+    useLazyQuery(GET_WORKOUT_PLAN);
   const [addWorkout] = useMutation(ADD_WORKOUT);
   const styles = useStyles();
   const [pageIndex, setPageIndex] = useState(0);
@@ -45,14 +47,14 @@ const WorkoutPlanPage = () => {
 
   const handleAddWorkout = async (name: string) => {
     try {
-      const {data} = await addWorkout({
+      const { data } = await addWorkout({
         variables: {
           workoutId: plan,
           name: name,
         },
       });
       if (data.addWorkout.result && refetch) {
-          await refetch();
+        await refetch();
       }
     } catch (err) {
       console.log(err.message);
@@ -94,7 +96,11 @@ const WorkoutPlanPage = () => {
           setNewWorkoutName(event.target.value);
         }}
       />
-      <Button variant="contained" color="primary" onClick={() => handleAddWorkout(newWorkoutName)}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => handleAddWorkout(newWorkoutName)}
+      >
         New Workout
       </Button>
     </div>
