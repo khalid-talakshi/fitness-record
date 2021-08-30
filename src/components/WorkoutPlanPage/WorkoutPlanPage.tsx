@@ -15,6 +15,7 @@ import {
   Divider,
 } from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
+import { WorkoutCard } from "./components";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,11 +28,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "space-between",
   },
-  exerciseList: {
-    backgroundColor: theme.palette.background.paper,
-  },
   exerciseTitle: {
     marginBottom: "1vh",
+  },
+  pageIndicator: {
+    display: "flex",
+    justifyContent: "center",
   },
 }));
 
@@ -58,6 +60,21 @@ const WorkoutPlanPage = () => {
     <Typography variant="h4">{data?.getWorkoutPlan?.name}</Typography>
   );
 
+  const workoutMarkup = data?.getWorkoutPlan?.workouts.map(
+    (item: any, index: number) => (
+      <WorkoutCard title={item.name} exercises={item.exercises} key={index} />
+    )
+  );
+
+  const addWorkoutCardMarkup = (
+    <div className={styles.addWorkoutCard}>
+      <Typography variant="h6">Add New Workout</Typography>
+      <Button variant="contained" color="primary">
+        New Workout
+      </Button>
+    </div>
+  );
+
   return (
     <>
       <Container className={styles.root}>
@@ -78,30 +95,12 @@ const WorkoutPlanPage = () => {
                 index={pageIndex}
                 onChangeIndex={(idx: number) => setPageIndex(idx)}
               >
-                <div>
-                  <Typography variant="h6" className={styles.exerciseTitle}>
-                    Chest + Tri
-                  </Typography>
-                  <Card variant="outlined">
-                    <List className={styles.exerciseList}>
-                      <ListItem>Bench Press</ListItem>
-                      <Divider />
-                      <ListItem>Incline Bench Press</ListItem>
-                      <Divider />
-                      <ListItem>Tricep Kickbacks</ListItem>
-                      <Divider />
-                      <ListItem>Tricep PullDowns</ListItem>
-                    </List>
-                  </Card>
-                </div>
-                <div className={styles.addWorkoutCard}>
-                  <Typography variant="h6">Add New Workout</Typography>
-                  <Button variant="contained" color="primary">
-                    New Workout
-                  </Button>
-                </div>
+                {workoutMarkup}
+                {addWorkoutCardMarkup}
               </SwipeableViews>
-              <p>{pageIndex + 1}</p>
+              <div className={styles.pageIndicator}>
+                <p>Page {pageIndex + 1} of {data?.getWorkoutPlan?.workouts?.length + 1}</p>
+              </div>
             </CardContent>
           </Card>
         </Grid>

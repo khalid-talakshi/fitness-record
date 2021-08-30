@@ -5,6 +5,12 @@ export const GET_WORKOUT_PLAN = gql`
     getWorkoutPlan(workoutId: $workoutId) {
       id
       name
+      workouts {
+        name
+        exercises {
+          name
+        }
+      }
     }
   }
 `;
