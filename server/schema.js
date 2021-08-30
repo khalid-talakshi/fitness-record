@@ -21,10 +21,15 @@ type AuthPayloadWithError {
   error: Error
 }
 
-type Workout {
+type Exercise {
   name: String!
   reps: Int!
   set: Int!
+}
+
+type Workout {
+  name: String!
+  exercises: [Exercise]!
 }
 
 type WorkoutPlan {
@@ -61,6 +66,7 @@ type Query {
   testAuthentication: String
   getUserDetails: User
   getWorkoutPlans: [WorkoutPlan]
+  getWorkoutPlan(workoutId: String!): WorkoutPlan
 }
 
 type Mutation {
@@ -69,5 +75,6 @@ type Mutation {
   createWorkoutPlan(name: String!): WorkoutPlanWithError
   setActiveWorkout(workoutId: String!): UserWithError
   deleteWorkoutPlan(workoutId: String!): WorkoutPlansWithError
+  addWorkout(workoutId: String!, name: String!): WorkoutPlanWithError
 }
 `;
