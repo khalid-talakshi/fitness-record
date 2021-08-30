@@ -13,13 +13,12 @@ async function insertWorkoutOnWorkoutPlan(workoutId, name) {
     }
     const updateResult = await workoutsCollection.updateOne(
       { _id: ObjectId(workoutId) },
-      { $set: { workouts: [...res.workouts, { name, exercises: [] }] } }
+      { $set: { workouts: [...res.workouts, { id: ObjectId(), name, exercises: [] }] } }
     );
     if (updateResult.modifiedCount === 1) {
       const doc = await workoutsCollection.findOne({
         _id: ObjectId(workoutId),
       });
-      console.log(doc);
       const docToReturn = { ...doc, id: doc._id };
       delete docToReturn._id;
       return docToReturn;
