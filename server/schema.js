@@ -61,6 +61,7 @@ type Query {
   testAuthentication: String
   getUserDetails: User
   getWorkoutPlans: [WorkoutPlan]
+  getWorkoutPlan(workoutId: String!): WorkoutPlan
 }
 
 type Mutation {
