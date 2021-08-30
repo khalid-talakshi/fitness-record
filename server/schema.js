@@ -28,6 +28,7 @@ type Exercise {
 }
 
 type Workout {
+  id: ID!
   name: String!
   exercises: [Exercise]!
 }
@@ -76,5 +77,6 @@ type Mutation {
   setActiveWorkout(workoutId: String!): UserWithError
   deleteWorkoutPlan(workoutId: String!): WorkoutPlansWithError
   addWorkout(workoutId: String!, name: String!): WorkoutPlanWithError
+  deleteWorkout(workoutId: String!, planId: String!): WorkoutPlanWithError
 }
 `;

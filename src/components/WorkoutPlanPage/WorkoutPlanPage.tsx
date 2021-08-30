@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { GET_WORKOUT_PLAN, ADD_WORKOUT } from "./graphql";
+import { GET_WORKOUT_PLAN, ADD_WORKOUT, DELETE_WORKOUT } from "./graphql";
 import {
   Container,
   Typography,
@@ -14,7 +14,6 @@ import {
 } from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
 import { WorkoutCard } from "./components";
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +40,7 @@ const WorkoutPlanPage = () => {
   const [getPlan, { data, error, loading, refetch }] =
     useLazyQuery(GET_WORKOUT_PLAN);
   const [addWorkout] = useMutation(ADD_WORKOUT);
+  const [deleteWorkout] = useMutation(DELETE_WORKOUT);
   const styles = useStyles();
   const [pageIndex, setPageIndex] = useState(0);
   const [newWorkoutName, setNewWorkoutName] = useState("");
@@ -54,6 +54,19 @@ const WorkoutPlanPage = () => {
         },
       });
       if (data.addWorkout.result && refetch) {
+        await refetch();
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const handleDeleteWorkout = async (workoutId: string) => {
+    try {
+      const { data } = await deleteWorkout({
+        variables: { workoutId, workoutPlanId: plan },
+      });
+      if (data?.deleteWorkout?.result && refetch) {
         await refetch();
       }
     } catch (err) {
@@ -78,11 +91,15 @@ const WorkoutPlanPage = () => {
     <Typography variant="h4">{data?.getWorkoutPlan?.name}</Typography>
   );
 
-  const workoutMarkup = data?.getWorkoutPlan?.workouts.map(
-    (item: any, index: number) => (
-      <WorkoutCard title={item.name} exercises={item.exercises} key={index} />
-    )
-  );
+  const workoutMarkup = data?.getWorkoutPlan?.workouts.map((item: any) => (
+    <WorkoutCard
+      id={item.id.toString()}
+      title={item.name}
+      exercises={item.exercises}
+      key={item.id.toString()}
+      handleDelete={handleDeleteWorkout}
+    />
+  ));
 
   const addWorkoutCardMarkup = (
     <div className={styles.addWorkoutCard}>
