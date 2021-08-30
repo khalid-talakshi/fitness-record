@@ -15,16 +15,14 @@ async function insertWorkoutOnWorkoutPlan(workoutId, name) {
       { _id: ObjectId(workoutId) },
       { $set: { workouts: [...res.workouts, { name, exercises: [] }] } }
     );
-    if (updatedResult.modifiedCount === 1) {
+    if (updateResult.modifiedCount === 1) {
       const doc = await workoutsCollection.findOne({
         _id: ObjectId(workoutId),
       });
+      console.log(doc);
       const docToReturn = { ...doc, id: doc._id };
       delete docToReturn._id;
-      return {
-        result: docToReturn,
-        error: null,
-      };
+      return docToReturn;
     }
     throw new Error("FAILED_TO_ADD_WORKOUT");
   } finally {
