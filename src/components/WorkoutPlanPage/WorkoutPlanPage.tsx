@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useLazyQuery } from "@apollo/client";
-import { GET_WORKOUT_PLAN } from "./graphql";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { GET_WORKOUT_PLAN, ADD_WORKOUT } from "./graphql";
 import {
   Container,
   Typography,
@@ -10,9 +10,7 @@ import {
   Card,
   CardContent,
   Button,
-  ListItem,
-  List,
-  Divider,
+  TextField,
 } from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
 import { WorkoutCard } from "./components";
@@ -39,9 +37,27 @@ const useStyles = makeStyles((theme) => ({
 
 const WorkoutPlanPage = () => {
   let { plan } = useParams<{ plan: string }>();
-  const [getPlan, { data, error, loading }] = useLazyQuery(GET_WORKOUT_PLAN);
+  const [getPlan, { data, error, loading, refetch }] = useLazyQuery(GET_WORKOUT_PLAN);
+  const [addWorkout] = useMutation(ADD_WORKOUT);
   const styles = useStyles();
   const [pageIndex, setPageIndex] = useState(0);
+  const [newWorkoutName, setNewWorkoutName] = useState("");
+
+  const handleAddWorkout = async (name: string) => {
+    try {
+      const {data} = await addWorkout({
+        variables: {
+          workoutId: plan,
+          name: name,
+        },
+      });
+      if (data.addWorkout.result && refetch) {
+          await refetch();
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   useEffect(() => {
     if (plan) {
@@ -69,7 +85,16 @@ const WorkoutPlanPage = () => {
   const addWorkoutCardMarkup = (
     <div className={styles.addWorkoutCard}>
       <Typography variant="h6">Add New Workout</Typography>
-      <Button variant="contained" color="primary">
+      <TextField
+        label="Workout Name"
+        variant="outlined"
+        style={{ marginTop: "1vh", marginBottom: "1vh" }}
+        value={newWorkoutName}
+        onChange={(event) => {
+          setNewWorkoutName(event.target.value);
+        }}
+      />
+      <Button variant="contained" color="primary" onClick={() => handleAddWorkout(newWorkoutName)}>
         New Workout
       </Button>
     </div>
@@ -99,7 +124,10 @@ const WorkoutPlanPage = () => {
                 {addWorkoutCardMarkup}
               </SwipeableViews>
               <div className={styles.pageIndicator}>
-                <p>Page {pageIndex + 1} of {data?.getWorkoutPlan?.workouts?.length + 1}</p>
+                <p>
+                  Page {pageIndex + 1} of{" "}
+                  {data?.getWorkoutPlan?.workouts?.length + 1}
+                </p>
               </div>
             </CardContent>
           </Card>
