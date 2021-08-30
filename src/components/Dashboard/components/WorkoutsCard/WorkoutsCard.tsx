@@ -18,6 +18,7 @@ import {
   UPDATE_ACTIVE_WORKOUT,
   CREATE_WORKOUT_PLAN,
   GET_WORKOUT_PLANS,
+  DELETE_WORKOUT_PLAN,
 } from "./graphql";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +39,7 @@ const WorkoutsCard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [createPlan] = useMutation(CREATE_WORKOUT_PLAN);
   const [setActiveWorkout] = useMutation(UPDATE_ACTIVE_WORKOUT);
+  const [deleteWorkoutPlan] = useMutation(DELETE_WORKOUT_PLAN);
   const styles = useStyles();
   const history = useHistory();
 
@@ -66,6 +68,15 @@ const WorkoutsCard = () => {
     });
   };
 
+  const handleDeleteWorkoutPlan = (id: string) => {
+    deleteWorkoutPlan({
+      variables: {
+        workoutId: id,
+      },
+    });
+    refetch();
+  };
+
   useEffect(() => {
     refetch();
   }, []);
@@ -89,7 +100,9 @@ const WorkoutsCard = () => {
                   >
                     <LaunchIcon />
                   </Button>
-                  <Button>
+                  <Button
+                    onClick={() => handleDeleteWorkoutPlan(item.id.toString())}
+                  >
                     <DeleteIcon />
                   </Button>
                 </ButtonGroup>
@@ -108,8 +121,6 @@ const WorkoutsCard = () => {
     }
   };
 
-  console.log("data", data);
-  console.log("errors", error);
   return (
     <>
       <Card>

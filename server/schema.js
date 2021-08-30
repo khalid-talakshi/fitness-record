@@ -45,6 +45,11 @@ type WorkoutPlanWithError {
   error: GenericError
 }
 
+type WorkoutPlansWithError {
+  result: [WorkoutPlan]
+  error: GenericError
+}
+
 type UserWithError {
   result: User
   error: GenericError
@@ -63,5 +68,6 @@ type Mutation {
   login(email: String!, password: String!): AuthPayloadWithError
   createWorkoutPlan(name: String!): WorkoutPlanWithError
   setActiveWorkout(workoutId: String!): UserWithError
+  deleteWorkoutPlan(workoutId: String!): WorkoutPlansWithError
 }
 `;

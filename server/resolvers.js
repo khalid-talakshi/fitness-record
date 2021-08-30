@@ -1,6 +1,6 @@
 import { testConnection } from "./database";
 import { login, signup, testAuthentication, getUserDetails } from "./auth";
-import { createWorkoutPlan, getWorkoutPlans, setActiveWorkout } from "./workoutResolvers";
+import { createWorkoutPlan, deleteWorkoutPlan, getWorkoutPlans, setActiveWorkout } from "./workoutResolvers";
 
 const testConnectionResolver = async (name) => {
   await testConnection(name);
@@ -20,5 +20,6 @@ export const resolvers = {
     login: login,
     createWorkoutPlan: createWorkoutPlan,
     setActiveWorkout: setActiveWorkout,
+    deleteWorkoutPlan: deleteWorkoutPlan,
   },
 };
