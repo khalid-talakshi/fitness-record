@@ -7,10 +7,8 @@ async function addWorkout(parent, args, context, info) {
       args.workoutId,
       args.name
     );
-    console.log(workoutPlan);
     return { result: workoutPlan, error: null };
   } catch (err) {
-      console.log(err.message);
     let errObj;
     switch (err.message) {
       case "WORKOUT_PLAN_NOT_FOUND":
